@@ -1,0 +1,15 @@
+# Source data — not for public distribution
+Existing Zoning/
+Proposed Zoning/
+existing_zoning.geojson
+proposed_zoning.geojson
+
+# PDFs
+*.pdf
+
+# Data pipeline
+scripts/
+requirements.txt
+
+# macOS
+.DS_Store

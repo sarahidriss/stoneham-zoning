@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stoneham Zoning Map — Proposed 2026 Changes</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <aside id="sidebar">
+
+    <div class="sidebar-branding">
+      <button id="sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar">‹</button>
+      <img src="images/StonehamSeal.png" alt="Town of Stoneham, Massachusetts" />
+      <div class="sidebar-branding-title">2026 Zoning Update</div>
+      <div class="sidebar-branding-subtitle">Proposal Comparison Tool</div>
+    </div>
+
+    <div class="sidebar-about">
+      <button class="sidebar-section-toggle" id="about-toggle" aria-expanded="true">
+        <span>MAP OVERVIEW</span>
+        <span class="toggle-arrow open" id="about-arrow">›</span>
+      </button>
+      <div class="sidebar-about-body" id="about-body">
+        <ul class="about-list">
+          <li>Proposed changes outlined in red</li>
+          <li>Click map to see zone detail</li>
+          <li>Toggle legend layers on/off</li>
+          <li>Search addresses for specific impact</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sidebar-legend">
+      <div class="legend-header" id="legend-toggle">
+        <span id="legend-title">Zone Legend</span>
+        <span id="legend-arrow" class="toggle-arrow open">›</span>
+      </div>
+      <div id="legend-body"></div>
+    </div>
+
+  </aside>
+
+  <div id="right-col">
+
+    <div id="mode-bar">
+      <button id="sidebar-expand" aria-label="Expand sidebar" title="Expand sidebar">›</button>
+      <div class="view-toggle">
+        <button id="btn-current" class="view-btn" data-mode="current">Current Zones</button>
+        <button id="btn-proposed" class="view-btn" data-mode="proposed">Proposed Zones</button>
+        <button id="btn-compare" class="view-btn active" data-mode="compare">Comparison</button>
+      </div>
+      <div class="modebar-search">
+        <div class="search-input-wrap">
+          <svg class="search-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 10L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="address-input" placeholder="Find your Stoneham address" autocomplete="off" />
+          <button id="search-btn" title="Search">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <div id="search-toast"></div>
+        <div id="result-card" class="hidden">
+          <button id="result-close" title="Close">×</button>
+          <div id="result-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="data/existing_zoning.js"></script>
+  <script src="data/proposed_zoning.js"></script>
+  <script src="data/changed_areas.js"></script>
+  <script>
+    document.getElementById('about-toggle').addEventListener('click', function() {
+      const body = document.getElementById('about-body');
+      const arrow = document.getElementById('about-arrow');
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', String(!expanded));
+      body.classList.toggle('collapsed', expanded);
+      arrow.classList.toggle('open', !expanded);
+    });
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
