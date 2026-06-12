@@ -12,14 +12,14 @@ The zoning board did thorough, difficult work putting these proposals together t
 
 ## How to use it
 
-- By default, the map opens to a comparison view, but you can toggle at the top to switch to the current & proposed maps, as well.
-- Proposed changes are outlined in red.
-- You can click any colored shape on the map to see zone details. When in comparison view, it will show both the current and proposed zones.
-- In the left panel, select or deselect legend items to control whether they appear on the map, or get factored into comparison.
+- By default, the map opens to a comparison view, but you can toggle at the top to switch to current or proposed maps.
+- Proposed changes are outlined in red in comparison view.
+- Click any colored shape on the map to see zone details. When in comparison view, it shows both current and proposed zones.
+- In the left panel, select or deselect legend items to control whether they appear on the map. Deselected zones don't get factored into comparisons.
 - By default, I deselected the "overlay" zones from the current map and comparison views, as I found the underlying zones were more important. You are welcome to choose whichever layers you wish to show.
-- If you can't find your address on the map, search for your street address in the top right. Beneath the search you'll see the current and proposed zones for that address, and the map will shift and drop a pin at that address.
-- You may collapse the left navigation to create more space to explore the map.
-- There's no mobile version yet.
+- If you can't find your address on the map, search for your street address in the top right. Beneath the search you'll see the current and proposed zones for that address, and the map will shift and drop a pin for you.
+- Collapse the left navigation to create more space to explore the map.
+- There's no mobile version yet!
 
 ## Data sources
 
@@ -31,6 +31,6 @@ The zoning board did thorough, difficult work putting these proposals together t
 
 ## About
 
-Built by Stoneham resident Sarah Idriss. Not an official Town of Stoneham resource.
+Built by Stoneham resident Sarah Idriss. Not an official Town of Stoneham resource. This is a first version, and will be updated and improved with town feedback.
 
 If you are a Stoneham resident looking for more information about bylaw changes, not covered by this tool, please see this draft of bylaw updates: https://www.stoneham-ma.gov/DocumentCenter/View/11692/Stoneham_ZoningBylaw_20260129
