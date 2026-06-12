@@ -1,8 +1,6 @@
 # Stoneham Zoning Map
 
-Interactive map comparing Stoneham, MA's current zoning with the proposed 2026 changes.
-
-The town of Stoneham will be voting on changes to our existing zoning maps and bylaws. To assist the community with understanding the map changes, I built a tool that allows you to compare the current and proposed maps more easily.
+The town of Stoneham, MA will be voting on changes to our existing zoning maps and bylaws. To assist the community in understanding the changes, I built a tool that allows you to compare the current and proposed maps.
 
 ## Why we need this
 
