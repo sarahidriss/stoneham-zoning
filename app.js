@@ -316,6 +316,16 @@ document.getElementById('btn-compare').addEventListener('click', () => setMode('
 
 // ── Map click — all modes ──────────────────────────────────────────────────────
 
+function mobilePopupOptions() {
+  if (window.innerWidth > 768) return {};
+  // On mobile, pad the top-left to keep popups below the zoom controls
+  // (+/- buttons sit at ~10px margin, 2×40px tall = ~100px from map top)
+  return {
+    autoPanPaddingTopLeft: L.point(10, 110),
+    autoPanPaddingBottomRight: L.point(10, 10),
+  };
+}
+
 map.on('click', function(e) {
   if (currentMode === 'current' || currentMode === 'proposed') {
     const geojson = currentMode === 'current' ? EXISTING_ZONING : PROPOSED_ZONING;
@@ -323,7 +333,7 @@ map.on('click', function(e) {
     if (!zone) return;
     const meta = zoneMeta(zone);
     const def = zoneDefinition(zone, currentMode);
-    L.popup()
+    L.popup(mobilePopupOptions())
       .setLatLng(e.latlng)
       .setContent(`<div class="popup-block">
         <div class="popup-label">${currentMode === 'current' ? 'Current Zone' : 'Proposed Zone'}</div>
@@ -383,7 +393,7 @@ map.on('click', function(e) {
           </div>
         </div>
       </div>`;
-  L.popup()
+  L.popup(mobilePopupOptions())
     .setLatLng(e.latlng)
     .setContent(content)
     .openOn(map);
@@ -498,28 +508,51 @@ async function searchAddress(address) {
 
 function showResultCard(address, existingZone, proposedZone) {
   const content = document.getElementById('result-content');
-  const exMeta = zoneMeta(existingZone);
-  const prMeta = zoneMeta(proposedZone);
-  const exPrimary = currentMode !== 'proposed';
-  const prPrimary = currentMode !== 'current';
-  content.innerHTML = `
-    <p class="result-addr"></p>
-    <div class="result-zones">
-      <div class="result-zone ${exPrimary ? '' : 'result-zone-secondary'}">
+  const sameZone = existingZone && proposedZone &&
+    zoneCanonical(existingZone) === zoneCanonical(proposedZone);
+
+  let zonesHTML;
+  if (sameZone) {
+    const meta = zoneMeta(existingZone);
+    const def = zoneDefinition(existingZone, 'current');
+    zonesHTML = `
+      <div class="result-zone">
+        <div class="result-zone-header">
+          <span class="result-zone-label">Zone</span>
+          <span class="result-no-change">No change proposed</span>
+        </div>
+        <div class="result-zone-row">
+          <div class="result-swatch" style="background:${meta.color}"></div>
+          <span class="result-zone-name">${zoneLabel(existingZone, 'current')}</span>
+        </div>
+        ${def ? `<p class="result-zone-def">${def}</p>` : ''}
+      </div>`;
+  } else {
+    const exMeta = zoneMeta(existingZone);
+    const prMeta = zoneMeta(proposedZone);
+    const exDef = existingZone ? zoneDefinition(existingZone, 'current') : null;
+    const prDef = proposedZone ? zoneDefinition(proposedZone, 'proposed') : null;
+    zonesHTML = `
+      ${existingZone ? `
+      <div class="result-zone">
         <span class="result-zone-label">Current Zone</span>
         <div class="result-zone-row">
           <div class="result-swatch" style="background:${exMeta.color}"></div>
           <span class="result-zone-name">${zoneLabel(existingZone, 'current')}</span>
         </div>
-      </div>
-      <div class="result-zone ${prPrimary ? '' : 'result-zone-secondary'}">
+        ${exDef ? `<p class="result-zone-def">${exDef}</p>` : ''}
+      </div>` : ''}
+      <div class="result-zone">
         <span class="result-zone-label">Proposed Zone</span>
         <div class="result-zone-row">
           <div class="result-swatch" style="background:${prMeta.color}"></div>
-          <span class="result-zone-name">${zoneLabel(proposedZone, 'proposed')}</span>
+          <span class="result-zone-name">${proposedZone ? zoneLabel(proposedZone, 'proposed') : 'Not in proposed plan'}</span>
         </div>
-      </div>
-    </div>`;
+        ${prDef ? `<p class="result-zone-def">${prDef}</p>` : ''}
+      </div>`;
+  }
+
+  content.innerHTML = `<p class="result-addr"></p><div class="result-zones">${zonesHTML}</div>`;
   content.querySelector('.result-addr').textContent = address;
   document.getElementById('result-card').classList.remove('hidden');
 }
@@ -556,3 +589,4 @@ document.getElementById('sidebar-expand').addEventListener('click', () => toggle
 // ── Boot ───────────────────────────────────────────────────────────────────────
 
 setMode('compare');
+if (window.innerWidth <= 768) toggleSidebar(true);
