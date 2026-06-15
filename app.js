@@ -8,23 +8,23 @@
 // Zones in GIS but absent from proposed PDF legend: use existing PDF color.
 const ZONE_META = {
   // ── In proposed PDF legend ─────────────────────────────────────────────────
-  'RESIDENCE A':                                           { color: '#f7e9ba', label: 'RESIDENCE A' },
-  'RESIDENCE B':                                           { color: '#ff02c5', label: 'RESIDENCE B' },
-  'BUSINESS':                                              { color: '#d8ebf2', label: 'BUSINESS' },
-  'CENTRAL BUSINESS DISTRICT':                             { color: '#ffff00', label: 'CENTRAL BUSINESS DISTRICT' },
-  'COMMERCIAL 1':                                          { color: '#fdab01', label: 'COMMERCIAL 1' },
-  'COMMERCIAL 3':                                          { color: '#734c00', label: 'COMMERCIAL 3',                proposedLabel: 'COMMERCIAL 2' },
-  'COMMERCIAL/MIXED USE':                                  { color: '#c97af7', label: 'FALLON ROAD MIXED USE',        proposedLabel: 'MIXED USE', hideFromExistingLegend: true },
-  'HIGHWAY BUSINESS':                                      { color: '#0071fd', label: 'HIGHWAY BUSINESS' },
-  'HIGHWAY BUSINESS DISTRICT':                             { color: '#0071fd', label: 'HIGHWAY BUSINESS' },
-  'MEDICAL/OFFICE/RESIDENTIAL':                            { color: '#9d9d9d', label: 'MEDICAL/OFFICE/RESIDENTIAL' },
-  'RECREATION AND OPEN SPACE':                             { color: '#569c2a', label: 'RECREATION AND OPEN SPACE' },
-  'RESIDENTIAL FALLON RD DISTRICT':                        { color: '#c97af7', label: 'FALLON ROAD MIXED USE',        proposedLabel: 'FALLON ROAD MIXED USE DISTRICT' },
+  'RESIDENCE A':                                           { color: '#f7e9ba', label: 'RESIDENCE A',                 definition: 'Family suburban residential area with related public uses' },
+  'RESIDENCE B':                                           { color: '#ff02c5', label: 'RESIDENCE B',                 definition: 'Medium-density residential of various housing types' },
+  'BUSINESS':                                              { color: '#d8ebf2', label: 'BUSINESS',                    definition: 'Retail and services' },
+  'CENTRAL BUSINESS DISTRICT':                             { color: '#ffff00', label: 'CENTRAL BUSINESS DISTRICT',   definition: 'Preserves and improves character of Stoneham Square' },
+  'COMMERCIAL 1':                                          { color: '#fdab01', label: 'COMMERCIAL 1',                definition: 'Light manufacturing, assembly, research, industrial & office parks, high-tech uses' },
+  'COMMERCIAL 3':                                          { color: '#734c00', label: 'COMMERCIAL 3',                proposedLabel: 'COMMERCIAL 2', definition: 'Light manufacturing, assembly, research, industrial & office parks, high-tech uses, plus large-scale retail' },
+  'COMMERCIAL/MIXED USE':                                  { color: '#c97af7', label: 'FALLON ROAD MIXED USE',        proposedLabel: 'MIXED USE', hideFromExistingLegend: true, definition: 'Commercial, office, and light industrial uses along Fallon Road', proposedDefinition: 'Mixed for commercial, office, housing, and light industrial uses' },
+  'HIGHWAY BUSINESS':                                      { color: '#0071fd', label: 'HIGHWAY BUSINESS',            definition: 'Highway-oriented shopping centers, businesses, and services for transient use' },
+  'HIGHWAY BUSINESS DISTRICT':                             { color: '#0071fd', label: 'HIGHWAY BUSINESS',            definition: 'Highway-oriented shopping centers, businesses, and services for transient use' },
+  'MEDICAL/OFFICE/RESIDENTIAL':                            { color: '#9d9d9d', label: 'MEDICAL/OFFICE/RESIDENTIAL',  definition: 'Medical services, office and research uses, and mixed residential development.' },
+  'RECREATION AND OPEN SPACE':                             { color: '#569c2a', label: 'RECREATION AND OPEN SPACE',   definition: 'Protects water supply, open space, and natural features with low-intensity public uses.' },
+  'RESIDENTIAL FALLON RD DISTRICT':                        { color: '#c97af7', label: 'FALLON ROAD MIXED USE',        proposedLabel: 'FALLON ROAD MIXED USE DISTRICT', definition: 'Commercial, office, and light industrial uses along Fallon Road.' },
   // North Main is crosshatch in both PDFs; using solid periwinkle for web
-  'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY':              { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY' },
-  'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT':     { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY' },
-  'NORTH MAIN STREET MIXED USE OVERLAY':                   { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY' },
-  'NORTH MAIN STREET MIXED USE RESIDENTIAL OVERLAY':       { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY' },
+  'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY':              { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY', definition: 'Mixed-use and multifamily addition to underlying Highway Business zone' },
+  'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT':     { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY', definition: 'Mixed-use and multifamily addition to underlying Highway Business zone' },
+  'NORTH MAIN STREET MIXED USE OVERLAY':                   { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY', definition: 'Mixed-use and multifamily addition to underlying Highway Business zone' },
+  'NORTH MAIN STREET MIXED USE RESIDENTIAL OVERLAY':       { color: '#7b83d4', label: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY DISTRICT', proposedLabel: 'NORTH MAIN MIXED USE RESIDENTIAL OVERLAY', definition: 'Mixed-use and multifamily addition to underlying Highway Business zone' },
 
   // ── In GIS but absent from proposed PDF legend — hidden in proposed/compare views ─
   'MEDICAL':                                               { color: '#c6d79e', label: 'MEDICAL',                        hideInProposed: true },
@@ -64,6 +64,13 @@ function zoneLabel(zt, mode) {
   const meta = zoneMeta(zt);
   if (mode !== 'current' && meta.proposedLabel) return meta.proposedLabel;
   return meta.label;
+}
+
+// Returns the definition string for a zone type in the given mode, or null
+function zoneDefinition(zt, mode) {
+  const meta = zoneMeta(zt);
+  if (mode !== 'current' && meta.proposedDefinition) return meta.proposedDefinition;
+  return meta.definition || null;
 }
 
 // Display order for legend rows (matches current zoning PDF order)
@@ -315,13 +322,17 @@ map.on('click', function(e) {
     const zone = findZone(geojson, e.latlng, currentMode);
     if (!zone) return;
     const meta = zoneMeta(zone);
+    const def = zoneDefinition(zone, currentMode);
     L.popup()
       .setLatLng(e.latlng)
       .setContent(`<div class="popup-block">
         <div class="popup-label">${currentMode === 'current' ? 'Current Zone' : 'Proposed Zone'}</div>
         <div class="popup-row">
           <div class="popup-swatch" style="background:${meta.color}"></div>
-          <div class="popup-zone">${zoneLabel(zone, currentMode)}</div>
+          <div class="popup-zone-group">
+            <div class="popup-zone">${zoneLabel(zone, currentMode)}</div>
+            ${def ? `<div class="popup-zone-def">${def}</div>` : ''}
+          </div>
         </div>
       </div>`)
       .openOn(map);
@@ -335,25 +346,46 @@ map.on('click', function(e) {
   const exMeta = zoneMeta(existingZone);
   const prMeta = zoneMeta(proposedZone);
   const proposedColor = proposedZone ? prMeta.color : 'transparent';
+  const noChange = existingZone && proposedZone && zoneCanonical(existingZone) === zoneCanonical(proposedZone);
 
-  L.popup()
-    .setLatLng(e.latlng)
-    .setContent(`<div class="popup-compare">
-      <div class="popup-block">
-        <div class="popup-label">Current Zone</div>
+  const exDef = existingZone ? zoneDefinition(existingZone, 'current') : null;
+  const prDef = proposedZone ? zoneDefinition(proposedZone, 'proposed') : null;
+  const content = noChange
+    ? `<div class="popup-block">
+        <div class="popup-label">No Change</div>
         <div class="popup-row">
           <div class="popup-swatch" style="background:${exMeta.color}"></div>
-          <div class="popup-zone">${zoneLabel(existingZone, 'current')}</div>
+          <div class="popup-zone-group">
+            <div class="popup-zone">${zoneLabel(existingZone, 'current')}</div>
+            ${exDef ? `<div class="popup-zone-def">${exDef}</div>` : ''}
+          </div>
         </div>
-      </div>
-      <div class="popup-block popup-block-last">
-        <div class="popup-label">Proposed Zone</div>
-        <div class="popup-row">
-          <div class="popup-swatch" style="background:${proposedColor}"></div>
-          <div class="popup-zone">${proposedZone ? zoneLabel(proposedZone, 'proposed') : '(not in proposed plan)'}</div>
+      </div>`
+    : `<div class="popup-compare">
+        <div class="popup-block">
+          <div class="popup-label">Current Zone</div>
+          <div class="popup-row">
+            <div class="popup-swatch" style="background:${exMeta.color}"></div>
+            <div class="popup-zone-group">
+              <div class="popup-zone">${zoneLabel(existingZone, 'current')}</div>
+              ${exDef ? `<div class="popup-zone-def">${exDef}</div>` : ''}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>`)
+        <div class="popup-block popup-block-last">
+          <div class="popup-label">Proposed Zone</div>
+          <div class="popup-row">
+            <div class="popup-swatch" style="background:${proposedColor}"></div>
+            <div class="popup-zone-group">
+              <div class="popup-zone">${proposedZone ? zoneLabel(proposedZone, 'proposed') : '(not in proposed plan)'}</div>
+              ${prDef ? `<div class="popup-zone-def">${prDef}</div>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  L.popup()
+    .setLatLng(e.latlng)
+    .setContent(content)
     .openOn(map);
 });
 
